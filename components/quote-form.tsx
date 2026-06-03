@@ -49,7 +49,7 @@ function SuccessState({ name, email }: { name: string; email: string }) {
           Thanks {name} — we&apos;ll be in touch within 2 hours.
         </p>
         <p className="mt-1 text-sm text-gray-500">
-          Confirmation sent to {email}.
+          Our team has your request and will contact you at {email} within 2 hours.
         </p>
       </div>
     </div>
@@ -91,10 +91,19 @@ export function QuoteForm() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
       })
-      if (!res.ok) throw new Error('Request failed')
+      const data = await res.json().catch(() => ({}))
+      if (!res.ok) {
+        throw new Error(
+          typeof data.error === 'string' ? data.error : 'Request failed'
+        )
+      }
       setSubmitted(true)
-    } catch {
-      setError('Something went wrong. Please try again or message us on WhatsApp.')
+    } catch (err) {
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Something went wrong. Please try again or message us on WhatsApp.'
+      )
     } finally {
       setSubmitting(false)
     }

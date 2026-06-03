@@ -44,7 +44,9 @@ Replace any stock photo with your own Ceemag images by overwriting files in `pub
    | Variable | Purpose |
    |----------|---------|
    | `NEXT_PUBLIC_WHATSAPP_NUMBER` | WhatsApp on quote page, e.g. `19054632764` |
-   | `N8N_WEBHOOK_URL` | Webhook for quote form submissions |
+   | `N8N_WEBHOOK_URL` | **Required** — n8n production webhook URL ([setup guide](docs/N8N_SETUP.md)) |
+   | `N8N_WEBHOOK_AUTH_HEADER` | Optional — if n8n Webhook uses header auth |
+   | `N8N_WEBHOOK_SECRET` | Optional — shared secret header |
    | `NEXT_PUBLIC_USE_LOCAL_IMAGES` | `true` if you committed `public/images/*.jpg` |
 
 5. Deploy.

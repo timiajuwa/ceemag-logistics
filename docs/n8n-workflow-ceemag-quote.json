@@ -1,0 +1,68 @@
+{
+  "name": "Ceemag Quote Requests",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ceemag-quote",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-ceemag",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [0, 0],
+      "webhookId": "ceemag-quote"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "summary",
+              "name": "summary",
+              "value": "=New Ceemag quote: {{ $json.contact.fullName }} — {{ $json.shipment.route }} ({{ $json.shipment.weightKg }} kg)",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "set-summary",
+      "name": "Format summary",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [220, 0]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={ \"ok\": true, \"received\": \"{{ $json.contact.email }}\" } }",
+        "options": {
+          "responseCode": 200
+        }
+      },
+      "id": "respond-ok",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [440, 0]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{ "node": "Format summary", "type": "main", "index": 0 }]]
+    },
+    "Format summary": {
+      "main": [[{ "node": "Respond to Webhook", "type": "main", "index": 0 }]]
+    }
+  },
+  "pinData": {},
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  }
+}
