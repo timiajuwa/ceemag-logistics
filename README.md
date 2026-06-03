@@ -1,36 +1,73 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Ceemag Logistics
 
-## Getting Started
+Marketing site for **Ceemag Logistics** (inspired by [godba.com](https://godba.com/), content from [ceemag.ca](https://ceemag.ca/)).
 
-First, run the development server:
+## Local development
 
 ```bash
+cd ~/ceemag-logistics
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) · Quote form at `/quote`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Logistics images
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Photos are curated Unsplash logistics shots (containers, trucks, air cargo, etc.). On Vercel they load automatically via Next.js Image Optimization.
 
-## Learn More
+To **bundle images in the repo** (faster, no external CDN):
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run images
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Then in `.env.local`:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+NEXT_PUBLIC_USE_LOCAL_IMAGES=true
+```
 
-## Deploy on Vercel
+Commit the files under `public/images/` if you want them on Vercel too (recommended for production).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Replace any stock photo with your own Ceemag images by overwriting files in `public/images/` (keep the same filenames) or updating `lib/images.ts`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Deploy to Vercel
+
+### Option A — Vercel website (easiest)
+
+1. Push this folder to a GitHub repository.
+2. Go to [vercel.com/new](https://vercel.com/new) and import the repo.
+3. Framework preset: **Next.js** (auto-detected).
+4. Add environment variables (optional):
+
+   | Variable | Purpose |
+   |----------|---------|
+   | `NEXT_PUBLIC_WHATSAPP_NUMBER` | WhatsApp on quote page, e.g. `19054632764` |
+   | `N8N_WEBHOOK_URL` | Webhook for quote form submissions |
+   | `NEXT_PUBLIC_USE_LOCAL_IMAGES` | `true` if you committed `public/images/*.jpg` |
+
+5. Deploy.
+
+### Option B — Vercel CLI
+
+```bash
+cd ~/ceemag-logistics
+npm install -g vercel   # once
+vercel login            # once
+vercel                  # first deploy (follow prompts)
+vercel --prod           # production URL
+```
+
+### After deploy
+
+- Production URL will look like `https://ceemag-logistics.vercel.app` (or your custom domain).
+- In the Vercel dashboard: **Settings → Environment Variables** for secrets above.
+- For a custom domain: **Settings → Domains** (e.g. `demo.ceemag.ca`).
+
+## Project structure
+
+- `app/` — Next.js pages (`/`, `/quote`, `/dashboard`)
+- `components/marketing/` — Homepage sections
+- `lib/images.ts` — Image URLs and local paths
+- `public/images/` — Cached photos after `npm run images`
