@@ -5,13 +5,6 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { LogoMarkLight } from '@/components/logo-mark'
 import Link from 'next/link'
@@ -73,6 +66,9 @@ export function QuoteForm() {
 
   const set = (field: keyof FormData) => (value: string) =>
     setForm(prev => ({ ...prev, [field]: value }))
+
+  const selectClass =
+    'w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm text-gray-900 shadow-sm focus:border-[#c0392b] focus:outline-none focus:ring-1 focus:ring-[#c0392b]'
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -197,62 +193,59 @@ export function QuoteForm() {
                 {/* Moving From + To */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <Label>
+                    <Label htmlFor="movingFrom">
                       Moving From <span className="text-red-500">*</span>
                     </Label>
-                    <Select
-                      value={form.movingFrom || undefined}
-                      onValueChange={v => v && set('movingFrom')(v as string)}
+                    <select
+                      id="movingFrom"
+                      value={form.movingFrom}
+                      onChange={e => set('movingFrom')(e.target.value)}
+                      required
+                      className={selectClass}
                     >
-                      <SelectTrigger className="w-full">
-                        <SelectValue>Select country</SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        {LOCATIONS.map(l => (
-                          <SelectItem key={l} value={l}>{l}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      <option value="" disabled>Select country</option>
+                      {LOCATIONS.map(l => (
+                        <option key={l} value={l}>{l}</option>
+                      ))}
+                    </select>
                   </div>
                   <div className="space-y-1.5">
-                    <Label>
+                    <Label htmlFor="movingTo">
                       Moving To <span className="text-red-500">*</span>
                     </Label>
-                    <Select
-                      value={form.movingTo || undefined}
-                      onValueChange={v => v && set('movingTo')(v as string)}
+                    <select
+                      id="movingTo"
+                      value={form.movingTo}
+                      onChange={e => set('movingTo')(e.target.value)}
+                      required
+                      className={selectClass}
                     >
-                      <SelectTrigger className="w-full">
-                        <SelectValue>Select country</SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        {LOCATIONS.map(l => (
-                          <SelectItem key={l} value={l}>{l}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      <option value="" disabled>Select country</option>
+                      {LOCATIONS.map(l => (
+                        <option key={l} value={l}>{l}</option>
+                      ))}
+                    </select>
                   </div>
                 </div>
 
                 {/* Cargo Type + Weight */}
                 <div className="grid grid-cols-2 gap-4">
                   <div className="space-y-1.5">
-                    <Label>
+                    <Label htmlFor="cargoType">
                       Cargo Type <span className="text-red-500">*</span>
                     </Label>
-                    <Select
-                      value={form.cargoType || undefined}
-                      onValueChange={v => v && set('cargoType')(v as string)}
+                    <select
+                      id="cargoType"
+                      value={form.cargoType}
+                      onChange={e => set('cargoType')(e.target.value)}
+                      required
+                      className={selectClass}
                     >
-                      <SelectTrigger className="w-full">
-                        <SelectValue>Select type</SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        {CARGO_TYPES.map(t => (
-                          <SelectItem key={t} value={t}>{t}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                      <option value="" disabled>Select type</option>
+                      {CARGO_TYPES.map(t => (
+                        <option key={t} value={t}>{t}</option>
+                      ))}
+                    </select>
                   </div>
                   <div className="space-y-1.5">
                     <Label htmlFor="weight">
