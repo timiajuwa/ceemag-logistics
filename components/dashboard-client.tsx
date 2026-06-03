@@ -280,7 +280,7 @@ export function DashboardClient() {
   const daysToCloseCutoff = daysUntil(cutoffDate)
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50" style={{ minWidth: '1300px' }}>
       {/* ── Header ── */}
       <header
         className="flex items-center justify-between px-6 py-3.5"
